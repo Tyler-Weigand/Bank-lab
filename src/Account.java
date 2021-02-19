@@ -31,6 +31,16 @@ public class Account {
 		this.trans = t;
 	}
 
+	public void withdraw(int w) {
+		this.bal -= w;
+		this.trans++; 
+	}
+
+	public void deposit(int d) {
+		this.bal += d;
+		this.trans++; 
+	}
+
 	public String toString() {
 		return ("acct:" + id + " bal:" + bal + " trans:" + trans);
 	}
