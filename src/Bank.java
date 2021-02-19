@@ -1,10 +1,11 @@
 import java.util.*;
+import java.io.*;
 
 
 public class Bank {
-	private ArrayDeque<Transaction> transactions = new ArrayDeque<Transaction>();
-	private int numAccounts = 20;
-	private Account[] accounts = new Account[20];
+	private static ArrayDeque<Transaction> transactions = new ArrayDeque<Transaction>();
+	private static int numAccounts = 20;
+	private static Account[] accounts = new Account[20];
 
 
 	class Worker implements Runnable {
@@ -13,7 +14,7 @@ public class Bank {
 		}
 	}
 	
-	public static void main (String [] args) {
+	public static void main (String [] args) throws IOException {
 		//initialize acccounts
 		for (int i=0; i<20; i++) {
 			accounts[i] = new Account(i,1000,0);
@@ -21,11 +22,12 @@ public class Bank {
 
 		//read args
 		String filename = args[0];
-		int threads = Integer.parseInt(args[1]);
+		numWorkers = Integer.parseInt(args[1]);
 
 		//initialize worker threads
+		Bank b = new Bank();
 		for (int i = 0; i<threads; i++) {
-			(new Thread(new Worker())).start();
+			(new Thread(b.new Worker())).start();
 		}
 
 		//read file
@@ -40,6 +42,8 @@ public class Bank {
 			amt = s.nextInt();
 			transactions.add(new Transaction(sender,receiver, amt));
 		}
+		//kill instruction
+		transactions.add(new Transaction(-1,-1,-1));
 
 
 	}
