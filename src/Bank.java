@@ -6,6 +6,7 @@ public class Bank {
 	private static ArrayDeque<Transaction> transactions = new ArrayDeque<Transaction>();
 	private static int numAccounts = 20;
 	private static Account[] accounts = new Account[20];
+	private static int numWorkers = 0;
 
 
 	class Worker implements Runnable {
