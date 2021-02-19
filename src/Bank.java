@@ -11,7 +11,22 @@ public class Bank {
 
 	class Worker implements Runnable {
 		public void run() {
-			numWorkers++;
+			while(true) {
+				Transaction trans = (Transaction)(transactions.poll());
+				if(trans != null) { //making sure that we actually pulled something to process
+					if(trans.getSender() == -1) { //if we got an exit sequence
+						return;
+					}
+					else { //process transaction
+						Account sender = accounts[trans.getSender()];
+						Account receiver = accounts[trans.getReceiver()];
+						sender.withdraw(trans.getAmount());
+						sender.setTrans(sender.getTrans()+1);
+						receiver.deposit(trans.getAmount());
+						receiver.setTrans(receiver.getTrans()+1);
+					}
+				}
+			}
 		}
 	}
 	
