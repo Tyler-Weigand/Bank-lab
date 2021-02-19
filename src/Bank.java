@@ -42,7 +42,7 @@ public class Bank {
 
 		//initialize worker threads
 		Bank b = new Bank();
-		for (int i = 0; i<threads; i++) {
+		for (int i = 0; i<numWorkers; i++) {
 			(new Thread(b.new Worker())).start();
 		}
 
@@ -59,7 +59,14 @@ public class Bank {
 			transactions.add(new Transaction(sender,receiver, amt));
 		}
 		//kill instruction
-		transactions.add(new Transaction(-1,-1,-1));
+		for (int i=0; i<numWorkers; i++) {
+			transactions.add(new Transaction(-1,-1,-1));
+		}
+		while (numWorkers > 0) {}
+		for (Account acc : accounts) {
+			System.out.println(acc);
+		}
+
 
 
 	}
