@@ -5,7 +5,7 @@ import java.io.*;
 
 public class Bank {
 	private static int numAccounts = 20;
-	private static ArrayBlockingQueue<Transaction> transactions = new ArrayBlockingQueue<Transaction>(100);
+	private static ArrayBlockingQueue<Transaction> transactions = new ArrayBlockingQueue<Transaction>(1000);
 	private static Account[] accounts = new Account[20];
 	private static int numWorkers = 0;
 
@@ -72,7 +72,12 @@ public class Bank {
 		}
 		//System.out.println("lol");
 		while (numWorkers > 0) {
-			//System.out.println("stuck");
+			try {
+				Thread.sleep(100);
+			}
+			catch(InterruptedException e) {
+				throw new RuntimeException(e);
+			}
 		}
 		//System.out.println("lolo");
 		for (Account acc : accounts) {
