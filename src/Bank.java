@@ -52,16 +52,19 @@ public class Bank {
 		int sender = 0;
 		int receiver = 0;
 		int amt = 0;
-		while (s.hasNextLine()) {
+		while (s.hasNextInt()) {
 			sender = s.nextInt();
 			receiver = s.nextInt();
 			amt = s.nextInt();
 			transactions.add(new Transaction(sender,receiver, amt));
 		}
+		
 		//kill instruction
 		for (int i=0; i<numWorkers; i++) {
 			transactions.add(new Transaction(-1,-1,-1));
 		}
+
+		//end
 		while (numWorkers > 0) {}
 		for (Account acc : accounts) {
 			System.out.println(acc);
