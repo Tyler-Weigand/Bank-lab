@@ -7,7 +7,7 @@ public class Bank {
 	private static int numAccounts = 20;
 	private static ArrayBlockingQueue<Transaction> transactions = new ArrayBlockingQueue<Transaction>(1000);
 	private static Account[] accounts = new Account[20];
-	private static int numWorkers = 0;
+	//private static int numWorkers = 0;
 
 
 	class Worker implements Runnable{
@@ -18,7 +18,7 @@ public class Bank {
 					//System.out.println("heyol");
 					if(trans.getSender() == -1) { //if we got an exit sequence
 						//System.out.println("hey");
-						numWorkers--;
+						Num.change();
 						//System.out.println(numWorkers);
 						return;
 					}
@@ -36,6 +36,10 @@ public class Bank {
 				}
 			}
 		}
+
+		/*public synchronized void changeWorkers() {
+			numWorkers--;
+		}*/
 	}
 	
 	public static void main (String [] args) throws IOException, InterruptedException{
@@ -46,11 +50,11 @@ public class Bank {
 
 		//read args
 		String filename = args[0];
-		numWorkers = Integer.parseInt(args[1]);
-		System.out.println(filename + " " + numWorkers);
+		Num.setNum(Integer.parseInt(args[1]));
+		//System.out.println(filename + " " + numWorkers);
 		//initialize worker threads
 		Bank b = new Bank();
-		for (int i = 0; i<numWorkers; i++) {
+		for (int i = 0; i<Num.numWorkers; i++) {
 			(new Thread(b.new Worker())).start();
 		}
 		
@@ -67,12 +71,13 @@ public class Bank {
 			transactions.put(new Transaction(sender,receiver, amt));
 		}
 		
+		int temp = Num.numWorkers;
 		//kill instruction
-		for (int i=0; i<numWorkers; i++) {
+		for (int i=0; i<temp; i++) {
 			transactions.put(new Transaction(-1,-1,-1));
 		}
 		//System.out.println("lol");
-		while (numWorkers > 0) {
+		while (Num.numWorkers > 0) {
 			try {
 				Thread.sleep(100);
 			}
