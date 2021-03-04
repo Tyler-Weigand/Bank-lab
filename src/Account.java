@@ -31,14 +31,18 @@ public class Account {
 		this.trans = t;
 	}
 
-	public synchronized void withdraw(int w) {
-		this.bal -= w;
-		this.trans++; 
+	public void withdraw(int w) {
+		synchronized(this) {
+			this.bal -= w;
+			this.trans++; 
+		}
 	}
 
-	public synchronized void deposit(int d) {
-		this.bal += d;
-		this.trans++; 
+	public void deposit(int d) {
+		synchronized(this) {
+			this.bal += d;
+			this.trans++;
+		}
 	}
 
 	public String toString() {
